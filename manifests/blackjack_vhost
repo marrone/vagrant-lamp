@@ -3,12 +3,10 @@
 	DocumentRoot /vagrant_projects/blackjack/trunk/website
 
     <Directory /vagrant_projects/blackjack/trunk/website>
-        DirectoryIndex index.php
+        DirectoryIndex index.php index.html
         AllowOverride All
         Order allow,deny
         Allow from all
-        Require all granted
-        Options +Indexes
     </Directory>
 
     ErrorLog "/vagrant_projects/_logs/blackjack-error.log"
