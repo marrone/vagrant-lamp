@@ -1,0 +1,17 @@
+<VirtualHost *:80 *:8090>
+    ServerName blackjack.local.dev.pch.com
+	DocumentRoot /vagrant_projects/blackjack/trunk/website
+
+    <Directory /vagrant_projects/blackjack/trunk/website>
+        DirectoryIndex index.php
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+        Require all granted
+        Options +Indexes
+    </Directory>
+
+    ErrorLog "/vagrant_projects/_logs/blackjack-error.log"
+    CustomLog "/vagrant_projects/_logs/blackjack-access.log" common
+
+</VirtualHost>

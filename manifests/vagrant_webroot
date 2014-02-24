@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+  ServerName localvagrant
+  DocumentRoot /vagrant_projects
+  <Directory /vagrant_projects>
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+    Options +Indexes
+  </Directory>
+</VirtualHost>

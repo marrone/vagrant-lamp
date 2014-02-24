@@ -1,0 +1,44 @@
+Install virtualbox 
+    https://www.virtualbox.org/wiki/Downloads
+
+Install vagrant
+    http://www.vagrantup.com/downloads
+
+Create a location for your vm
+    > mkdir ~/webserver
+
+Clone the vagrant setup repo
+    > cd ~/webserver
+    > git clone <REPO_URL>
+
+Provision your VM
+    > vagrant up
+
+Install latest guest-additions plugin
+    > vagrant plugin install vagrant-vbguest
+
+Once it is up and running, you can ssh into the vm
+    > vagrant ssh
+
+You can connect to mysql without ssh'ing into the box from your mac host:
+    > mysql -uroot -h localhost --protocol=TCP -P 33066
+If that doesnt work, you might need to manually edit the my.cnf file
+    > vagrant ssh
+    > sudo vim /etc/mysql/my.cnf
+    > comment out the lines that start with "bind-address" and "skip-external-locking"
+    > sudo /etc/init.d/mysql restart
+
+Shared directories from your Mac host to the vagrant box include:
+    - ~/webserver => /vagrant
+    - ~/projects => /vagrant_projects
+
+Assuming you have the blackjack repo checked out at ~/projects/blackjack/trunk/website...
+Basic steps for installing Blackjack, post-vm setup
+    > sudo echo "192.168.33.10 blackjack.local.dev.pch.com" >> /etc/hosts
+    > vagrant ssh
+    > mysql -uroot
+    > create database blackjack; exit;
+    > mysql -uroot blackjack < <PATH_TO_DB_DUMP>
+    > sudo apache2ctl restart
+    > exit
+You can then hit http://blackjack.local.dev.pch.com from your host machine
