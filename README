@@ -9,7 +9,7 @@ Create a location for your vm
 
 Clone the vagrant setup repo
     > cd ~/webserver
-    > git clone <REPO_URL>
+    > git clone git@github.com:marrone/vagrant-lamp.git
 
 Provision your VM
     > vagrant up
