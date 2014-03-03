@@ -1,7 +1,7 @@
 class mysql {
 
   # root mysql password
-  $mysqlpw = "d3v0p5"
+  #$mysqlpw = "d3v0p5"
 
   # install mysql server
   package { "mysql-server":
@@ -22,7 +22,7 @@ class mysql {
   }
   exec { "open-external-mysql-connections":
     require => Service["mysql"],
-    command => "sed -i .bak 's/\\(skip-external-locking\\)/#\\1/g' /etc/mysql/my.cnf && sed -i .bak 's/\\(bind-address\\)/#\\1/g' /etc/mysql/my.cnf && /etc/init.d/mysql restart"
+    command => "sed -i 's/\\(skip-external-locking\\)/#\\1/g' /etc/mysql/my.cnf && sed -i 's/\\(bind-address\\)/#\\1/g' /etc/mysql/my.cnf && /etc/init.d/mysql restart"
   }
 
   # set mysql password
