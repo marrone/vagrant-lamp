@@ -22,11 +22,6 @@ Once it is up and running, you can ssh into the vm
 
 You can connect to mysql without ssh'ing into the box from your mac host:
     > mysql -uroot -h localhost --protocol=TCP -P 33066
-TODO: If that doesnt work, you might need to manually edit the my.cnf file
-    > vagrant ssh
-    > sudo vim /etc/mysql/my.cnf
-    > comment out the lines that start with "bind-address" and "skip-external-locking"
-    > sudo /etc/init.d/mysql restart
 
 TODO: You need to fix an issue with apache serving shared static files (see: http://geoffmcqueen.com/2011/08/12/solved-apache-serving-corrupted-files-via-virtualbox-vboxfs-shares/)
     > vagrant ssh
@@ -35,6 +30,12 @@ TODO: You need to fix an issue with apache serving shared static files (see: htt
 Shared directories from your Mac host to the vagrant box include:
     - ~/webserver => /vagrant
     - ~/projects => /vagrant_projects
+
+The defaul vhost points to your projects dir root and lists files and directories. 
+I.E You can navigate to http://192.168.33.10 to further navigate through your projects dir
+
+PhpMyAdmin is available at http://192.168.33.10/phpmyadmin and should not prompt for credentials
+User is 'root' and password is blank
 
 Assuming you have the blackjack repo checked out at ~/projects/blackjack/trunk/website...
 Basic steps for installing Blackjack, post-vm setup
