@@ -5,7 +5,8 @@ class tools {
     "curl",
     "vim",
     "htop",
-    "wget"
+    "wget",
+    "git"
   ]
 
   # install packages

@@ -6,6 +6,11 @@ class apache {
     require => Exec["apt-get update"]
   }
 
+  file { "/etc/apache2/apache2.conf":
+    ensure => present,
+    require => Package["apache2"],
+  }
+
   # ensures that mod_rewrite is loaded and modifies the default configuration file
   file { "/etc/apache2/mods-enabled/rewrite.load":
     ensure => link,
@@ -18,6 +23,29 @@ class apache {
     target => "/etc/apache2/mods-available/vhost_alias.load",
     require => Package["apache2"]
   }
+  # ensure the include module is loaded
+  file { "/etc/apache2/mods-enabled/include.load":
+    ensure => link,
+    target => "/etc/apache2/mods-available/include.load",
+    require => Package["apache2"]
+  }
+  # turn off EnableSendfile
+  exec { "disable-apache-sendfile":
+    command => "echo 'EnableSendfile Off' >> /etc/apache2/apache2.conf",
+    unless => "grep '^EnableSendfile Off' /etc/apache2/apache2.conf",
+    require => File["/etc/apache2/apache2.conf"]
+  }
+
+  # setup fancy indexing project
+  exec { "pull-fancyindexing-repo":
+    command => "git clone https://github.com/marrone/Apaxy.git /vagrant_projects/webserver",
+    unless => "find /vagrant_projects/webserver -type d",
+    require => Package["git"]
+  }
+  file { "/vagrant_projects/webserver":
+    ensure => directory,
+    require => Exec["pull-fancyindexing-repo"]
+  }
 
   # create directory
   file {"/etc/apache2/sites-enabled":
@@ -27,6 +55,10 @@ class apache {
     force => true,
     before => File["/etc/apache2/sites-enabled/000-default"],
     require => Package["apache2"],
+  }
+  file {"/vagrant_projects/_logs":
+    ensure => directory,
+    before => File["/etc/apache2/sites-enabled/000-default"]
   }
 
   # create apache config from main vagrant manifests
@@ -61,7 +93,7 @@ class apache {
   # starts the apache2 service once the packages installed, and monitors changes to its configuration files and reloads if nesessary
   service { "apache2":
     ensure => running,
-    require => Package["apache2"],
+    require => [Package["apache2"], Exec["disable-apache-sendfile"]],
     subscribe => [
       File["/etc/apache2/mods-enabled/rewrite.load"],
       File["/etc/apache2/sites-available/vagrant_webroot"]

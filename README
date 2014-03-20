@@ -1,3 +1,6 @@
+TODO:
+    - apache start on boot
+
 Install virtualbox 
     https://www.virtualbox.org/wiki/Downloads
 
@@ -22,10 +25,6 @@ Once it is up and running, you can ssh into the vm
 
 You can connect to mysql without ssh'ing into the box from your mac host:
     > mysql -uroot -h localhost --protocol=TCP -P 33066
-
-TODO: You need to fix an issue with apache serving shared static files (see: http://geoffmcqueen.com/2011/08/12/solved-apache-serving-corrupted-files-via-virtualbox-vboxfs-shares/)
-    > vagrant ssh
-    > sudo echo "EnableSendfile Off" >> /etc/apache2/apache2.conf
 
 Shared directories from your Mac host to the vagrant box include:
     - ~/webserver => /vagrant
